@@ -44,6 +44,7 @@ def main():
     arg_parser.add_argument('-s', "--startdate", help="The Start Date - format YYYY-MM-DD (0h00)", type=valid_date)
     arg_parser.add_argument('-e', "--enddate", help="The End Date - format YYYY-MM-DD (0h00)", type=valid_date)
     arg_parser.add_argument('-c', "--chronological", help="Sort items in chronological order", action="store_true")
+    arg_parser.add_argument('-a', "--accuracyrequired", help="Filters out fixes with accuracy worse (greater than) value", type=int,)
     args = arg_parser.parse_args()
 
     if not args.output: #if the output file is not specified, set to input filename with a diffrent extension
@@ -76,6 +77,12 @@ def main():
 
         if args.startdate or args.enddate:
             items = [ item for item in items if dateCheck(item["timestampMs"], args.startdate, args.enddate) ]
+
+        if args.startdate or args.accuracyrequired:
+            items = [ item for item in items if item["accuracy"] < args.accuracyrequired ]
+
+        for item in items:
+            print (item["accuracy"])
 
         if args.chronological:
             items = sorted(items, key=lambda item: item["timestampMs"])
