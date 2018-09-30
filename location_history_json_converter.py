@@ -81,9 +81,6 @@ def main():
         if args.startdate or args.accuracyrequired:
             items = [ item for item in items if item["accuracy"] < args.accuracyrequired ]
 
-        for item in items:
-            print (item["accuracy"])
-
         if args.chronological:
             items = sorted(items, key=lambda item: item["timestampMs"])
 
